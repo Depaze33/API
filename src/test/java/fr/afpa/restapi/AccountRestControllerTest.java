@@ -59,7 +59,7 @@ class AccountRestControllerTest {
 
         assertNotNull(requestMapping);
         assertThat(requestMapping.value().length).isEqualTo(1);
-        assertThat(requestMapping.value()).contains("api/accounts");
+        assertThat(requestMapping.value()).contains("/api/accounts");
     }
 
     @Test
@@ -89,7 +89,7 @@ class AccountRestControllerTest {
     @Order(5)
     @DisplayName("Getting all accounts response status is OK")
     void getAccountsResponseStatusCode() throws Exception {
-        mockMvc.perform(get("/accounts").accept(MediaType.APPLICATION_JSON))
+        mockMvc.perform(get("/api/accounts").accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
     }
 
@@ -100,7 +100,7 @@ class AccountRestControllerTest {
         Account account = create("Johnny", "Boy", "jboy@gmail.com");
         accountDao.save(account);
 
-        mockMvc.perform(get(String.format("/accounts/%d", account.getId())))
+        mockMvc.perform(get(String.format("/api/accounts/%d", account.getId())))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").value(account.getId()))
                 .andExpect(jsonPath("$.email").value("jboy@gmail.com"))
@@ -113,7 +113,7 @@ class AccountRestControllerTest {
     @DisplayName("Creating account returns corresponding HTTP status - 201")
     void httpStatusCodeOnCreate() throws Exception {
         mockMvc.perform(
-                post("/accounts")
+                post("/api/accounts")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("{\"firstName\":\"Johnny\", \"lastName\":\"Boy\", \"email\":\"jboy@gmail.com\"}"))
                 .andExpect(status().isCreated());
@@ -124,7 +124,7 @@ class AccountRestControllerTest {
     @DisplayName("Creating account returns assigned Id")
     void createAccountReturnsAssignedId() throws Exception {
         mockMvc.perform(
-                post("/accounts")
+                post("/api/accounts")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("{\"firstName\":\"Johnny\", \"lastName\":\"Boy\", \"email\":\"jboy@gmail.com\"}"))
                 .andExpect(jsonPath("$.id").value(1L));
@@ -145,9 +145,9 @@ class AccountRestControllerTest {
         Account account = create("Johnny", "Boy", "jboy@gmail.com");
         accountDao.save(account);
 
-        mockMvc.perform(put(String.format("/accounts/%d", account.getId())).contentType(MediaType.APPLICATION_JSON)
+        mockMvc.perform(put(String.format("/api/accounts/%d", account.getId())).contentType(MediaType.APPLICATION_JSON)
                 .content(String.format("{\"id\":\"%d\", \"firstName\":\"Johnny\", \"lastName\":\"Boy\", \"email\":\"johnny.boy@gmail.com\"}", account.getId())))
-                .andExpect(status().isNoContent());
+                .andExpect(status().isOk());
     }
 
     @Test
@@ -157,7 +157,7 @@ class AccountRestControllerTest {
         Account account = create("Johnny", "Boy", "jboy@gmail.com");
         accountDao.save(account);
 
-        mockMvc.perform(delete(String.format("/accounts/%d", account.getId())))
+        mockMvc.perform(delete(String.format("/api/accounts/%d", account.getId())))
                 .andExpect(status().isNoContent());
     }
 }

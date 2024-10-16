@@ -14,13 +14,13 @@ import java.util.Optional;
  * TODO ajouter la/les annotations nécessaires pour faire de "AccountRestController" un contrôleur de REST API
  */
 @RestController
-@RequestMapping("accounts") // Add a base request mapping to avoid repeating the base path
+@RequestMapping("/api/accounts") // Add a base request mapping to avoid repeating the base path
 public class AccountRestController {
 
     private final AccountDao accountDao;
 
     // Constructor injection with @Autowired annotation
-    @Autowired
+
     public AccountRestController(AccountDao accountDao) {
         this.accountDao = accountDao;
     }
@@ -28,7 +28,7 @@ public class AccountRestController {
     /**
      * Handles GET requests and returns a list of accounts.
      */
-    @GetMapping("/api/accounts")
+    @GetMapping
     public List<Account> getAll() {
         return accountDao.findAll();
     }

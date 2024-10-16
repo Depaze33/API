@@ -59,7 +59,7 @@ public class AccountRestController {
     /**
      * TODO implémenter une méthode qui traite les requêtes PUT
      */
-    @PutMapping("/{id}")
+     @PutMapping("/{id}")
     public ResponseEntity<Account> putAccount(@PathVariable Long id, @RequestBody Account account) {
         Optional<Account> existingAccount = accountDao.findById(id);
 

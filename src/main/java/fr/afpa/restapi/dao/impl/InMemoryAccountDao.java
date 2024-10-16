@@ -1,20 +1,14 @@
 package fr.afpa.restapi.dao.impl;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-
+import fr.afpa.restapi.dao.AccountDao;
+import fr.afpa.restapi.model.Account;
 import org.springframework.stereotype.Component;
 
-import fr.afpa.restapi.dao.AccountDao;
-
-import fr.afpa.restapi.model.Account;
+import java.util.*;
 
 /**
- * Une implémentation de {@link AccountDao} basée sur un {@link java.util.HashMap} 
- * 
+ * Une implémentation de {@link AccountDao} basée sur un {@link java.util.HashMap}
+ * <p>
  * TODO annoter cette classe de façon à en faire un "bean". Quelle est l'annotation à utiliser dans ce cas de figure ?
  * Pour vous aider, lisez l'article suivant -> https://www.axopen.com/blog/2019/02/java-spring-les-beans/
  */
@@ -31,9 +25,24 @@ public class InMemoryAccountDao implements AccountDao {
         return new ArrayList<>(accountMap.values());
     }
 
+
     @Override
     public Optional<Account> findById(long id) {
-        return Optional.of(accountMap.get(id));
+        try {
+            return Optional.of(accountMap.get(id));
+        } catch (NullPointerException e) {
+            System.out.println("Compte non trouvé");
+        }
+    return Optional.empty();
+    }
+
+    public void createAccountTest() {
+        Account account1 = new Account();
+        account1.setId(1L);
+        account1.setFirstName("Bobby");
+        account1.setLastName("Bob");
+
+        accountMap.put(account1.getId(), account1);
     }
 
     @Override

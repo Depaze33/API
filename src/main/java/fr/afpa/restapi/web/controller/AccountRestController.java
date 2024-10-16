@@ -1,6 +1,7 @@
 package fr.afpa.restapi.web.controller;
 
 import fr.afpa.restapi.dao.AccountDao;
+import fr.afpa.restapi.dao.impl.InMemoryAccountDao;
 import fr.afpa.restapi.model.Account;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -28,16 +29,23 @@ public class AccountRestController {
     /**
      * Handles GET requests and returns a list of accounts.
      */
+
     @GetMapping
     public List<Account> getAll() {
+
+        ((InMemoryAccountDao) accountDao).createAccountTest();
+
         return accountDao.findAll();
     }
 
     /**
      * Handles GET requests with a path variable ID and returns the associated account information.
      * For more information on path variables, see: https://www.baeldung.com/spring-pathvariable
+     *RECUPERE DES DONEES
      */
     @GetMapping("/{id}")
+
+
     public ResponseEntity<Account> getById(@PathVariable long id) {
         return accountDao.findById(id)
                 .map(ResponseEntity::ok)
@@ -48,6 +56,7 @@ public class AccountRestController {
      * Handles POST requests, saves the account in memory, and returns its information (in JSON).
      * Returns HTTP status code 201 Created upon success.
      * Interesting tutorial: https://stackabuse.com/get-http-post-body-in-spring/
+     *ENVOIE DES DONNES
      */
     @PostMapping
     public ResponseEntity<Account> postAccount(@RequestBody Account account) {
@@ -58,6 +67,7 @@ public class AccountRestController {
 
     /**
      * TODO implémenter une méthode qui traite les requêtes PUT
+     * METS A JOURS LES DONNES
      */
      @PutMapping("/{id}")
     public ResponseEntity<Account> putAccount(@PathVariable Long id, @RequestBody Account account) {
@@ -91,6 +101,7 @@ public class AccountRestController {
      * TODO implémenter une méthode qui traite les requêtes  DELETE
      * L'identifiant du compte devra être passé en "variable de chemin" (ou "path variable")
      * Dans le cas d'un suppression effectuée avec succès, le serveur doit retourner un status http 204 (No content)
+     * SUPPRIME
      */
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteAccount(@PathVariable long id) {
